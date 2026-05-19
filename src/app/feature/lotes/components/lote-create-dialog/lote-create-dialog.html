@@ -1,0 +1,73 @@
+<h2 mat-dialog-title>Novo lote</h2>
+
+<mat-dialog-content>
+  <div class="form-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Operador</mat-label>
+      <input
+        matInput
+        [(ngModel)]="operador"
+        placeholder="joao.silva">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Processo</mat-label>
+      <input
+        matInput
+        [(ngModel)]="processo"
+        placeholder="ABERTURA_CONTA">
+    </mat-form-field>
+  </div>
+
+  <h3>Documentos</h3>
+
+  @for (documento of documentos; track $index) {
+    <div class="document-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo</mat-label>
+        <input
+          matInput
+          [(ngModel)]="documento.tipo"
+          placeholder="RG">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nome</mat-label>
+        <input
+          matInput
+          [(ngModel)]="documento.nome"
+          placeholder="rg_frente.jpg">
+      </mat-form-field>
+
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="removerDocumento($index)">
+        Remover
+      </button>
+    </div>
+  }
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="adicionarDocumento()">
+    Adicionar documento
+  </button>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    type="button"
+    (click)="cancelar()">
+    Cancelar
+  </button>
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="salvar()">
+    Criar lote
+  </button>
+</mat-dialog-actions>
