@@ -39,4 +39,11 @@ export class LoteService {
 
   }
 
+  atualizarStatus(id: number, status: LoteStatus): Observable<Lote> {
+    return this.http.patch<Lote>(
+      `${this.api}/${id}/status`,
+      {status}
+    );
+  }
+
 }
