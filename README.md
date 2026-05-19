@@ -1,59 +1,117 @@
-# DocgestorFrontend
+# DocGestor
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.2.
+Sistema para gerenciamento de lotes de documentos, desenvolvido como
+desafio técnico utilizando **Java + Spring Boot + PostgreSQL +
+Angular**.
 
-## Development server
+## Tecnologias
 
-To start a local development server, run:
+### Backend
 
-```bash
+-   Java 17
+-   Spring Boot
+-   Spring Data JPA
+-   PostgreSQL
+-   Bean Validation
+-   Lombok
+
+### Frontend
+
+-   Angular
+-   Angular Material
+-   TypeScript
+-   Signals
+-   Standalone Components
+
+## Estrutura
+
+``` txt
+docgestor/
+├── docgestor-backend/
+└── docgestor-frontend/
+
+```
+
+## Regras
+
+Status: - PENDENTE - EXPORTADO - REJEITADO
+
+Lotes EXPORTADOS não podem sofrer alterações.
+
+## Backend
+
+``` bash
+cd docgestor-backend
+mvn spring-boot:run
+```
+
+Executa em:
+
+``` txt
+http://localhost:8180
+```
+
+## Frontend
+
+``` bash
+cd docgestor-frontend
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Executa em:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+``` txt
+http://localhost:4200
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## cURL
 
-```bash
-ng generate --help
+### Criar lote
+
+``` bash
+curl --location 'http://localhost:8180/api/lotes' --header 'Content-Type: application/json' --data '{
+    "operador":"joao.silva",
+    "processo":"ABERTURA_CONTA",
+    "documentos":[
+      {
+        "tipo":"RG",
+        "nome":"rg_frente.jpg"
+      },
+      {
+        "tipo":"CPF",
+        "nome":"cpf.pdf"
+      }
+    ]
+}'
 ```
 
-## Building
+### Listar
 
-To build the project run:
-
-```bash
-ng build
+``` bash
+curl --location 'http://localhost:8180/api/lotes?page=0&size=10'
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Filtrar
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+``` bash
+curl --location 'http://localhost:8180/api/lotes?status=PENDENTE'
 ```
 
-## Running end-to-end tests
+### Atualizar status
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+``` bash
+curl --location --request PATCH 'http://localhost:8180/api/lotes/1/status' --header 'Content-Type: application/json' --data '{
+"status":"EXPORTADO"
+}'
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Supostas melhorias futuras
 
-## Additional Resources
+-   autenticação
+-   upload real de arquivos
+-   testes unitários
+-   dockerização
+-   dashboard
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Desenvolvido por Ednei Augusto Gonçalves Filho (ednei.ag.filho@gmail.com)
