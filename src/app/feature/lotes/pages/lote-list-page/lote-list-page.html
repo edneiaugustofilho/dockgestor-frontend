@@ -7,9 +7,6 @@
       <span>Carregando lotes...</span>
     </div>
   }
-  @if (error()) {
-    <p class="error">{{ error() }}</p>
-  }
 
   <div class="filters">
     <mat-form-field appearance="outline">
@@ -33,10 +30,10 @@
       Filtrar
     </button>
   </div>
-  @if (!loading() && !error() && lotes().length === 0) {
+  @if (!loading() && lotes().length === 0) {
     <p class="empty-state">Nenhum lote encontrado.</p>
   }
-  @if (!loading() && !error() && lotes().length > 0) {
+  @if (!loading() && lotes().length > 0) {
     <table>
       <thead>
       <tr>

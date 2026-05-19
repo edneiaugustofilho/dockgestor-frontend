@@ -11,6 +11,8 @@ import {Lote} from '../../models/lote.model';
 import {LoteStatus} from '../../models/lote-status.enum';
 import {StatusUpdateDialog} from '../../components/status-update-dialog/status-update-dialog';
 import {ErrorMessageExtractorService} from '../../../../core/services/error-message-extrator';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {SnackBarService} from '../../../../core/services/snack-bar';
 
 @Component({
   selector: 'app-lote-list-page',
@@ -21,7 +23,8 @@ import {ErrorMessageExtractorService} from '../../../../core/services/error-mess
     MatSelectModule,
     MatButtonModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSnackBarModule
   ], templateUrl: './lote-list-page.html',
   styleUrl: './lote-list-page.css'
 })
@@ -30,6 +33,7 @@ export class LoteListPage {
   protected readonly LoteStatus = LoteStatus;
 
   private dialog = inject(MatDialog);
+  private snackBarService = inject(SnackBarService);
   private loteService = inject(LoteService);
   private errorMessageExtractor = inject(ErrorMessageExtractorService);
 
@@ -43,7 +47,6 @@ export class LoteListPage {
   statusSelecionado = signal<LoteStatus | null>(null);
   lotes = signal<Lote[]>([]);
   loading = signal(false);
-  error = signal<string | null>(null);
 
   ngOnInit(): void {
     this.carregar();
@@ -55,7 +58,6 @@ export class LoteListPage {
 
   carregar(): void {
     this.loading.set(true);
-    this.error.set(null);
 
     this.loteService.listar(this.statusSelecionado() ?? undefined)
       .subscribe({
@@ -64,16 +66,13 @@ export class LoteListPage {
           this.loading.set(false);
         },
         error: (err) => {
-          console.error(err);
-          this.error.set(this.extractErrorMessage(err, 'Não foi possível carregar os lotes.'));
+          this.showSnackBar(this.extractErrorMessage(err, 'Não foi possível carregar os lotes.'));
           this.loading.set(false);
         }
       });
   }
 
   abrirAtualizacaoStatus(lote: Lote): void {
-    this.error.set(null);
-
     const dialogRef = this.dialog.open(StatusUpdateDialog, {
       data: lote
     });
@@ -85,8 +84,13 @@ export class LoteListPage {
 
       this.loteService.atualizarStatus(lote.id, novoStatus)
         .subscribe({
-          next: () => this.carregar(),
-          error: () => this.error.set('Não foi possível atualizar o status do lote.')
+          next: () => {
+            this.showSnackBar('Status do lote atualizado com sucesso.');
+            this.carregar();
+          },
+          error: (err) => {
+            this.showSnackBar(this.extractErrorMessage(err, 'Não foi possível atualizar o statos do lote.'));
+          }
         });
     });
   }
@@ -95,5 +99,9 @@ export class LoteListPage {
     return defaultMessage == null ?
       this.errorMessageExtractor.extract(error) :
       this.errorMessageExtractor.extract(error, defaultMessage);
+  }
+
+  private showSnackBar(message: string): void {
+    this.snackBarService.showMessage(message)
   }
 }
