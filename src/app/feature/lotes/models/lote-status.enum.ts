@@ -1,0 +1,5 @@
+export enum LoteStatus {
+  PENDENTE = 'PENDENTE',
+  EXPORTADO = 'EXPORTADO',
+  REJEITADO = 'REJEITADO'
+}
