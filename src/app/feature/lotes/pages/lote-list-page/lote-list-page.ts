@@ -4,9 +4,11 @@ import {FormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {LoteService} from '../../services/lote';
 import {Lote} from '../../models/lote.model';
 import {LoteStatus} from '../../models/lote-status.enum';
+import {StatusUpdateDialog} from '../../components/status-update-dialog/status-update-dialog';
 
 @Component({
   selector: 'app-lote-list-page',
@@ -15,13 +17,17 @@ import {LoteStatus} from '../../models/lote-status.enum';
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule
   ],  templateUrl: './lote-list-page.html',
   styleUrl: './lote-list-page.css'
 })
 export class LoteListPage {
 
-  statusSelecionado = signal<LoteStatus | null>(null);
+  protected readonly LoteStatus = LoteStatus;
+
+  private dialog = inject(MatDialog);
+  private loteService = inject(LoteService);
 
   statusOptions = [
     {label: 'Todos', value: null},
@@ -30,11 +36,14 @@ export class LoteListPage {
     {label: 'Rejeitado', value: LoteStatus.REJEITADO}
   ];
 
-  private loteService = inject(LoteService);
-
+  statusSelecionado = signal<LoteStatus | null>(null);
   lotes = signal<Lote[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
+
+  ngOnInit(): void {
+    this.carregar();
+  }
 
   filtrar(): void {
     this.carregar();
@@ -58,9 +67,22 @@ export class LoteListPage {
       });
   }
 
-  ngOnInit(): void {
-    this.carregar();
+  abrirAtualizacaoStatus(lote: Lote): void {
+    const dialogRef = this.dialog.open(StatusUpdateDialog, {
+      data: lote
+    });
+
+    dialogRef.afterClosed().subscribe((novoStatus: LoteStatus | undefined) => {
+      if (!novoStatus || novoStatus === lote.status) {
+        return;
+      }
+
+      this.loteService.atualizarStatus(lote.id, novoStatus)
+        .subscribe({
+          next: () => this.carregar(),
+          error: () => this.error.set('Não foi possível atualizar o status do lote.')
+        });
+    });
   }
 
-  protected readonly LoteStatus = LoteStatus;
 }

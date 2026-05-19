@@ -45,7 +45,9 @@
 
       <tbody>
         @for (lote of lotes(); track lote.id) {
-          <tr>
+          <tr
+            class="clickable-row"
+            (click)="abrirAtualizacaoStatus(lote)">
             <td>{{ lote.id }}</td>
             <td>{{ lote.operador }}</td>
             <td>{{ lote.processo }}</td>
