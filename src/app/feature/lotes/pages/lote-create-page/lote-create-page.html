@@ -1,0 +1,102 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1>Novo lote</h1>
+      <p>Informe os dados do lote e ao menos um documento.</p>
+    </div>
+
+    <button
+      mat-stroked-button
+      routerLink="/">
+      Voltar
+    </button>
+  </div>
+
+  <form
+    class="form"
+    (ngSubmit)="salvar()">
+
+    <div class="card">
+      <h2>Dados do lote</h2>
+
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Operador</mat-label>
+          <input
+            matInput
+            name="operador"
+            [(ngModel)]="operador"
+            placeholder="joao.silva">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Processo</mat-label>
+          <input
+            matInput
+            name="processo"
+            [(ngModel)]="processo"
+            placeholder="ABERTURA_CONTA">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-header">
+        <h2>Documentos</h2>
+
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="adicionarDocumento()">
+          Adicionar documento
+        </button>
+      </div>
+
+      @for (documento of documentos; track $index) {
+        <div class="document-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <input
+              matInput
+              name="tipo-{{ $index }}"
+              [(ngModel)]="documento.tipo"
+              placeholder="RG">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Nome</mat-label>
+            <input
+              matInput
+              name="nome-{{ $index }}"
+              [(ngModel)]="documento.nome"
+              placeholder="rg_frente.jpg">
+          </mat-form-field>
+
+          <button
+            mat-stroked-button
+            type="button"
+            [disabled]="documentos.length === 1"
+            (click)="removerDocumento($index)">
+            Remover
+          </button>
+        </div>
+      }
+    </div>
+
+    <div class="actions">
+      <button
+        mat-stroked-button
+        type="button"
+        routerLink="/">
+        Cancelar
+      </button>
+
+      <button
+        mat-flat-button
+        type="submit"
+        [disabled]="saving">
+        {{ saving ? 'Salvando...' : 'Salvar lote' }}
+      </button>
+    </div>
+  </form>
+</section>
