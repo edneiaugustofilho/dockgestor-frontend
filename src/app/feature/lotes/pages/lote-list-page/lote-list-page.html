@@ -1,0 +1,37 @@
+<section class="page">
+  <h1>Gestão de Lotes</h1>
+
+  @if (loading()) {
+    <p>Carregando lotes...</p>
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  @if (!loading() && !error()) {
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Operador</th>
+        <th>Processo</th>
+        <th>Status</th>
+        <th>Data de Criação</th>
+      </tr>
+      </thead>
+
+      <tbody>
+        @for (lote of lotes(); track lote.id) {
+          <tr>
+            <td>{{ lote.id }}</td>
+            <td>{{ lote.operador }}</td>
+            <td>{{ lote.processo }}</td>
+            <td>{{ lote.status }}</td>
+            <td>{{ lote.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
