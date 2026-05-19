@@ -1,6 +1,14 @@
 <section class="page">
   <h1>Gestão de Lotes</h1>
 
+  <button
+    mat-stroked-button
+    class="primary-action-button"
+    type="button"
+    routerLink="/lotes/novo">
+    Novo lote
+  </button>
+
   @if (loading()) {
     <div class="loading">
       <mat-spinner diameter="36"></mat-spinner>

@@ -13,6 +13,7 @@ import {StatusUpdateDialog} from '../../components/status-update-dialog/status-u
 import {ErrorMessageExtractorService} from '../../../../core/services/error-message-extrator';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {SnackBarService} from '../../../../core/services/snack-bar';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-lote-list-page',
@@ -24,7 +25,8 @@ import {SnackBarService} from '../../../../core/services/snack-bar';
     MatButtonModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    RouterLink
   ], templateUrl: './lote-list-page.html',
   styleUrl: './lote-list-page.css'
 })
