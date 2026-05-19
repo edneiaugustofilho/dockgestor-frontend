@@ -7,6 +7,7 @@
 
     <button
       mat-stroked-button
+      class="filter-button"
       routerLink="/">
       Voltar
     </button>
@@ -46,6 +47,7 @@
 
         <button
           mat-stroked-button
+          class="filter-button"
           type="button"
           (click)="adicionarDocumento()">
           Adicionar documento
@@ -74,6 +76,7 @@
 
           <button
             mat-stroked-button
+            class="filter-button"
             type="button"
             [disabled]="documentos.length === 1"
             (click)="removerDocumento($index)">
@@ -86,6 +89,7 @@
     <div class="actions">
       <button
         mat-stroked-button
+        class="filter-button"
         type="button"
         routerLink="/">
         Cancelar
@@ -93,6 +97,7 @@
 
       <button
         mat-flat-button
+        class="primary-action-button"
         type="submit"
         [disabled]="saving">
         {{ saving ? 'Salvando...' : 'Salvar lote' }}

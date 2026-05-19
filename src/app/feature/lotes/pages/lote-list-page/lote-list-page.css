@@ -83,12 +83,28 @@ td {
   color: #666;
 }
 
+.header-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -48px;
+  margin-bottom: 24px;
+}
+
+.primary-action-button {
+  height: 56px;
+  border-radius: 4px !important;
+  border: 1px solid #222 !important;
+  color: #fff !important;
+  background: #222 !important;
+  font-weight: 500;
+}
+
+.primary-action-button:hover {
+  background: #444 !important;
+}
+
 .error {
   margin-top: 24px;
   color: #b00020;
   font-weight: 500;
-}
-
-.error {
-  color: #b00020;
 }
