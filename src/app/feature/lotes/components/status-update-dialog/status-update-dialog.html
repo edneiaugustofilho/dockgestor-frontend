@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Atualizar status</h2>
+
+<mat-dialog-content>
+  <p>
+    Lote #{{ lote.id }} — {{ lote.operador }}
+  </p>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Status</mat-label>
+
+    <mat-select [(ngModel)]="statusSelecionado">
+      @for (status of statusOptions; track status) {
+        <mat-option [value]="status">
+          {{ status }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    type="button"
+    (click)="cancelar()">
+    Cancelar
+  </button>
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="salvar()">
+    Salvar
+  </button>
+</mat-dialog-actions>
