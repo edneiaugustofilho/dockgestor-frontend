@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
-import {PageResponse} from '../models/page-response.model';
+import {PageResponse} from '../../../core/models/page-response.model';
 import {Lote} from '../models/lote.model';
 import {LoteStatus} from '../models/lote-status.enum';
 
@@ -20,7 +20,6 @@ export class LoteService {
     page: number = 0,
     size: number = 10
   ): Observable<PageResponse<Lote>> {
-
     let params = new HttpParams()
       .set('page', page)
       .set('size', size);
@@ -36,7 +35,6 @@ export class LoteService {
       this.api,
       {params}
     );
-
   }
 
   atualizarStatus(id: number, status: LoteStatus): Observable<Lote> {

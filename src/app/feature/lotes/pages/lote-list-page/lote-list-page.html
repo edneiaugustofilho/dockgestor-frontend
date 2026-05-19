@@ -2,9 +2,11 @@
   <h1>Gestão de Lotes</h1>
 
   @if (loading()) {
-    <p>Carregando lotes...</p>
+    <div class="loading">
+      <mat-spinner diameter="36"></mat-spinner>
+      <span>Carregando lotes...</span>
+    </div>
   }
-
   @if (error()) {
     <p class="error">{{ error() }}</p>
   }
@@ -31,7 +33,10 @@
       Filtrar
     </button>
   </div>
-  @if (!loading() && !error()) {
+  @if (!loading() && !error() && lotes().length === 0) {
+    <p class="empty-state">Nenhum lote encontrado.</p>
+  }
+  @if (!loading() && !error() && lotes().length > 0) {
     <table>
       <thead>
       <tr>

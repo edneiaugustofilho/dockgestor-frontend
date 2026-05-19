@@ -5,10 +5,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LoteService} from '../../services/lote';
 import {Lote} from '../../models/lote.model';
 import {LoteStatus} from '../../models/lote-status.enum';
 import {StatusUpdateDialog} from '../../components/status-update-dialog/status-update-dialog';
+import {ErrorMessageExtractorService} from '../../../../core/services/error-message-extrator';
 
 @Component({
   selector: 'app-lote-list-page',
@@ -18,8 +20,9 @@ import {StatusUpdateDialog} from '../../components/status-update-dialog/status-u
     MatFormFieldModule,
     MatSelectModule,
     MatButtonModule,
-    MatDialogModule
-  ],  templateUrl: './lote-list-page.html',
+    MatDialogModule,
+    MatProgressSpinnerModule
+  ], templateUrl: './lote-list-page.html',
   styleUrl: './lote-list-page.css'
 })
 export class LoteListPage {
@@ -28,6 +31,7 @@ export class LoteListPage {
 
   private dialog = inject(MatDialog);
   private loteService = inject(LoteService);
+  private errorMessageExtractor = inject(ErrorMessageExtractorService);
 
   statusOptions = [
     {label: 'Todos', value: null},
@@ -59,15 +63,17 @@ export class LoteListPage {
           this.lotes.set(response.content);
           this.loading.set(false);
         },
-        error: (err ) => {
+        error: (err) => {
           console.error(err);
-          this.error.set('Não foi possível carregar os lotes.');
+          this.error.set(this.extractErrorMessage(err, 'Não foi possível carregar os lotes.'));
           this.loading.set(false);
         }
       });
   }
 
   abrirAtualizacaoStatus(lote: Lote): void {
+    this.error.set(null);
+
     const dialogRef = this.dialog.open(StatusUpdateDialog, {
       data: lote
     });
@@ -85,4 +91,9 @@ export class LoteListPage {
     });
   }
 
+  private extractErrorMessage(error: unknown, defaultMessage: string | null): string {
+    return defaultMessage == null ?
+      this.errorMessageExtractor.extract(error) :
+      this.errorMessageExtractor.extract(error, defaultMessage);
+  }
 }
