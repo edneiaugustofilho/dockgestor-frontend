@@ -9,6 +9,28 @@
     <p class="error">{{ error() }}</p>
   }
 
+  <div class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+
+      <mat-select [(ngModel)]="statusSelecionado">
+        @for (option of statusOptions; track option.label) {
+          <mat-option [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      class="filter-button"
+      color="primary"
+      type="button"
+      (click)="filtrar()">
+      Filtrar
+    </button>
+  </div>
   @if (!loading() && !error()) {
     <table>
       <thead>
@@ -27,7 +49,17 @@
             <td>{{ lote.id }}</td>
             <td>{{ lote.operador }}</td>
             <td>{{ lote.processo }}</td>
-            <td>{{ lote.status }}</td>
+            <td>
+              <span
+                class="status-badge"
+                [class.pendente]="lote.status==='PENDENTE'"
+                [class.exportado]="lote.status==='EXPORTADO'"
+                [class.rejeitado]="lote.status==='REJEITADO'">
+
+                  {{ lote.status }}
+
+              </span>
+            </td>
             <td>{{ lote.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</td>
           </tr>
         }
