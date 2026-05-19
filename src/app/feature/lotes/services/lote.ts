@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {PageResponse} from '../../../core/models/page-response.model';
 import {Lote} from '../models/lote.model';
 import {LoteStatus} from '../models/lote-status.enum';
+import {CreateLoteRequest} from '../models/create-lote-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,13 @@ export class LoteService {
   private http = inject(HttpClient);
 
   private api = 'http://localhost:8180/api/lotes';
+
+  criar(request: CreateLoteRequest): Observable<Lote> {
+    return this.http.post<Lote>(
+      this.api,
+      request
+    );
+  }
 
   listar(
     status?: LoteStatus,
