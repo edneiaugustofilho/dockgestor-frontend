@@ -11,7 +11,7 @@ import {Lote} from '../../models/lote.model';
 import {LoteStatus} from '../../models/lote-status.enum';
 import {StatusUpdateDialog} from '../../components/status-update-dialog/status-update-dialog';
 import {ErrorMessageExtractorService} from '../../../../core/services/error-message-extrator';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {SnackBarService} from '../../../../core/services/snack-bar';
 
 @Component({
@@ -89,16 +89,14 @@ export class LoteListPage {
             this.carregar();
           },
           error: (err) => {
-            this.showSnackBar(this.extractErrorMessage(err, 'Não foi possível atualizar o statos do lote.'));
+            this.showSnackBar(this.extractErrorMessage(err, 'Não foi possível atualizar o status do lote.'));
           }
         });
     });
   }
 
-  private extractErrorMessage(error: unknown, defaultMessage: string | null): string {
-    return defaultMessage == null ?
-      this.errorMessageExtractor.extract(error) :
-      this.errorMessageExtractor.extract(error, defaultMessage);
+  private extractErrorMessage(error: unknown, defaultMessage?: string): string {
+    return this.errorMessageExtractor.extract(error, defaultMessage);
   }
 
   private showSnackBar(message: string): void {
